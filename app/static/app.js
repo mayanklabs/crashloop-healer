@@ -73,10 +73,10 @@ function formatDuration(ms) {
 }
 
 function getStatusBadge(container) {
-    if (container.status === "running") {
+    if (container.status === "Up") {
         return `<span class="status-badge status-running">Running</span>`;
     }
-    if (container.oom_killed || container.status === "exited" || container.restart_count > 0) {
+    if (container.oom_killed || container.status === "Exited" || container.restart_count > 0) {
         return `<span class="status-badge status-crashed">Crashed</span>`;
     }
     return `<span class="status-badge status-recovering">Recovering</span>`;
@@ -101,8 +101,8 @@ function renderEvents(events) {
 }
 
 function renderStats(containers, events) {
-    const running = containers.filter(c => c.status === "running").length;
-    const crashed = containers.filter(c => c.status !== "running" || c.oom_killed).length;
+    const running = containers.filter(c => c.status === "Up").length;
+    const crashed = containers.filter(c => c.status !== "Up" || c.oom_killed).length;
     const recoveries = allEvents.length;
 
     let mttr = 0;

@@ -1,8 +1,6 @@
-version: '3.8'
-
 services:
   healer:
-    image: crashloop-healer:latest
+    image: mayanklabs/crashloop-healer:latest
     container_name: crashloop-healer
     ports:
       - "8000:8000"
@@ -13,3 +11,6 @@ services:
 
 volumes:
   healer-data:
+
+# Usage:
+# docker compose -f docker-compose.yml -f docker-compose.healer.yml up -d
