@@ -1,0 +1,18 @@
+.venv
+
+# AI/LLM
+.codegraph
+.remember
+.cluade
+.playwright-mcp
+
+
+# DOCS
+README.md
+PRD.md
+LEARNINGS.md
+CLAUDE.md
+progress.md
+
+# DATABASES
+*.db
