@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  healer:
+    image: crashloop-healer:latest
+    container_name: crashloop-healer
+    ports:
+      - "8000:8000"
+    volumes:
+      - healer-data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+volumes:
+  healer-data:

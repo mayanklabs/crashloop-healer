@@ -1,0 +1,68 @@
+# Git
+
+.git
+.gitignore
+
+# Python
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+.env
+
+# IDE
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docs
+
+README.md
+PRD.md
+LEARNINGS.md
+CLAUDE.md
+progress.md
+
+# Local data
+
+data/
+*.db
+*.sqlite
+
+# CI/CD
+
+.github/
+.gitlab-ci.yml
+
+# Monitoring (mounted at runtime)
+
+grafana/
+prometheus.yml
+
+# Docker
+
+docker-compose*.yml
+Dockerfile
+.dockerignore
+
+# AI/LLM
+
+.codegraph/
+.remember/
+.playwright-mcp/
+
+# Tests
+
+*.test.py
+test_*.py
+
+# Misc
+
+*.log
+*.tmp
+*.bak
