@@ -5,7 +5,7 @@ services:
     build: .
     container_name: crashloop-healer
     ports:
-      - "8000:8000"
+      - "3733:3733"
     volumes:
       - ./data:/app/data
       - /var/run/docker.sock:/var/run/docker.sock
@@ -39,12 +39,6 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_USERS_ALLOW_SIGN_UP=false
     restart: unless-stopped
-
-  crash-target:
-    image: alpine:3.19
-    container_name: crash-target
-    command: sh -c "sleep 30; echo 'Simulating crash after running healthy...'; exit 137"
-    mem_limit: 50m
 
 volumes:
   prometheus_data:

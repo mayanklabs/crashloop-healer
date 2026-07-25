@@ -1,11 +1,24 @@
-import time
 import threading
+import time
+
 import docker
+
 from app.metrics import containers_monitored
-from app.recovery import recover, last_healthy_image, restart_counts
+from app.recovery import last_healthy_image, recover
 
 client = docker.from_env()
 POLL_INTERVAL = 5
+
+EXCLUDED_PREFIXES = (
+    "crashloop-healer",
+    "prometheus",
+    "grafana",
+    "redis",  # infra - not app logic
+    "db",  # infra - database
+    "postgres",  # alternate name
+    "seed",  # one-shot job
+)
+
 
 def _is_unhealthy(container) -> tuple[bool, str]:
     state = container.attrs.get("State", {})
@@ -19,12 +32,13 @@ def _is_unhealthy(container) -> tuple[bool, str]:
             return True, "healthcheck_unhealthy"
     return False, ""
 
+
 def _update_healthy_image(container):
     name = container.name
     image = container.attrs.get("Config", {}).get("Image", "")
     if image:
         last_healthy_image[name] = image
-        restart_counts.pop(name, None)
+
 
 def watch_loop():
     while True:
@@ -33,11 +47,7 @@ def watch_loop():
             containers_monitored.set(len(containers))
 
             for container in containers:
-                if (
-                    container.name.startswith("crashloop-healer")
-                    or container.name.startswith("prometheus")
-                    or container.name.startswith("grafana")
-                ):
+                if any(container.name.startswith(p) for p in EXCLUDED_PREFIXES):
                     continue
 
                 unhealthy, reason = _is_unhealthy(container)
@@ -50,6 +60,7 @@ def watch_loop():
             print(f"[watcher] error: {e}")
 
         time.sleep(POLL_INTERVAL)
+
 
 def start_watcher():
     thread = threading.Thread(target=watch_loop, daemon=True)
